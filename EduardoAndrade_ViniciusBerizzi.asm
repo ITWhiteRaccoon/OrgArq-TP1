@@ -3,10 +3,25 @@
 	.text
 	.globl main
 main:	
+	la	$s0, vet_dados
+	addiu	$sp, $sp, -4	#Adiciona posicao na pilha
+	sw	$s0, 0($sp)	#Guarda endereco do vet_dados($s0) na pilha para argumento de carrega_vetor
+	jal	carrega_vetor
+	lw	$s1, 0($sp)	#$s1 = retorno da funcao (tamanho do vetor de dados)
+	addiu	$sp, $sp, 4	#Remove da pilha
+	la	$t1, int_tam_dados 
+	sw	$s1, 0($t1)	#Guarda tamanho do vetor em int_tam_dados
+	
+	la	$s2, vet_padrao
+	addiu	$sp, $sp, -4
+	sw	$s2, 0($sp)	#Guarda endereco do vet_padrao($s2) na pilha
+	jal	carrega_vetor
+	lw	$s3, 0($sp)	#$s3 = tamanho do vetor padrao
+	addiu	$sp, $sp, 4
+	la	
 	
 	
-	
-carrega_vetor:
+carrega_vetor:#(int * _enderecoVetor) : int
 	lw	$t0, 0($sp)	#$t0 = _enderecoVetor (arg da funcao na pilha - pop)
 	addiu	$sp, $sp, 4	#Ajusta pilha
 	
@@ -53,7 +68,7 @@ encontra_padrao:
 	.data
 str_tam_vet:	.asciiz "Informe o numero de dados a serem inseridos no vetor "
 str_dado_vet:	.asciiz "Informe um dado a ser inserido no vetor "
-str_qtd_padroes:	.asciiz "Quantidade de padroes contabilizados: "
+str_qtd_padroes:.asciiz "Quantidade de padroes contabilizados: "
 str_dados:	.asciiz "dados: "
 str_padrao:	.asciiz	"padrao: "
 int_tam_dados:	.word	0
