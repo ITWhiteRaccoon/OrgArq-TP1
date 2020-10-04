@@ -27,8 +27,17 @@ main:
 m_loop:
 	addu	$t0, $s5, $s3	#$t0 = posicaoDados + int_tam_padrao
 	bgt	$t0, $s1, main_end	#if ((posicaoDados + int_tam_padrao) > int_tam_dados) goto main_end
-	
-	
+	addiu	$sp, $sp, -20	#Abre 5 posicoes na pilha para os 5 parametros
+	sw	$s0, 0($sp)	# *_vetDados
+	sw	$s5, 4($sp)	# _posDados
+	sw	$s2, 8($sp)	# *_vetPadrao
+	sw	$zero, 12($sp)	# 0
+	sw	$s3, 16($sp)	# _tamPadrao
+	jal	encontra_padrao
+	lw	$t1, 0($sp)	#Le retorno da pilha 
+	addiu	$sp, $sp, 4	#Tira da pilha
+	addu	$s4, $s4, $t1	#contabilizaPadrao += retorno
+	addiu	$s5, $s5, 1	#posicaoDados++
 	j	m_loop
 	
 main_end:
@@ -43,7 +52,7 @@ main_end:
 	li	$v0, 10		#Encerra programa
 	syscall
 	
-carrega_vetor:#(int * _enderecoVetor) : int
+carrega_vetor: #(int * _enderecoVetor) : int
 	lw	$t0, 0($sp)	#$t0 = _enderecoVetor (arg da funcao na pilha - pop)
 	addiu	$sp, $sp, 4	#Ajusta pilha
 	
@@ -83,7 +92,13 @@ cv_loop_fim:
 	sw	$t1, 0($sp)	#Escreve tamVet($t1) na pilha
 	jr	$ra
 	
-encontra_padrao:
+encontra_padrao: #(int *_vetDados, int _posDados, int *_vetPadrao, int _posPadrao, int _tamPadrao) : int
+	lw	$t0, 0($sp)
+	lw	$t1, 4($sp)
+	lw	$t2, 8($sp)
+	lw	$t3, 12($sp)
+	lw	$t4, 16($sp)
+	addiu	$sp, $sp, 20
 	
 	
 	
