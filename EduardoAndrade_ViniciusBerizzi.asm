@@ -21,16 +21,24 @@ main:
 	la	$t0, int_tam_padrao
 	sw	$s3, 0($t0)	#Guarda tamanho do vetor padrao em int_tam_padrao
 	
+	li	$s4, 0		#$s4 = contabilizaPadrao = 0
+	li	$s5, 0		#$s5 = posicaoDados = 0
+	
 m_loop:
+	addu	$t0, $s5, $s3	#$t0 = posicaoDados + int_tam_padrao
+	bgt	$t0, $s1, main_end	#if ((posicaoDados + int_tam_padrao) > int_tam_dados) goto main_end
 	
 	
+	j	m_loop
 	
 main_end:
-	la	$a0, str_qtd_padroes	#Qtd de padroes encontrados...
+	la	$a0, str_qtd_padroes	#Imprime string 'Qtd de padroes encontrados...'
 	li	$v0, 4
 	syscall
 	
-	
+	move	$a0, $s4	#Imprime o nro resultante
+	li	$v0, 1
+	syscall
 	
 	li	$v0, 10		#Encerra programa
 	syscall
