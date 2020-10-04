@@ -9,8 +9,8 @@ main:
 	jal	carrega_vetor
 	lw	$s1, 0($sp)	#$s1 = retorno da funcao (tamanho do vetor de dados)
 	addiu	$sp, $sp, 4	#Remove da pilha
-	la	$t1, int_tam_dados 
-	sw	$s1, 0($t1)	#Guarda tamanho do vetor em int_tam_dados
+	la	$t0, int_tam_dados 
+	sw	$s1, 0($t0)	#Guarda tamanho do vetor dados em int_tam_dados
 	
 	la	$s2, vet_padrao
 	addiu	$sp, $sp, -4
@@ -18,8 +18,22 @@ main:
 	jal	carrega_vetor
 	lw	$s3, 0($sp)	#$s3 = tamanho do vetor padrao
 	addiu	$sp, $sp, 4
-	la	
+	la	$t0, int_tam_padrao
+	sw	$s3, 0($t0)	#Guarda tamanho do vetor padrao em int_tam_padrao
 	
+m_loop:
+	
+	
+	
+main_end:
+	la	$a0, str_qtd_padroes	#Qtd de padroes encontrados...
+	li	$v0, 4
+	syscall
+	
+	
+	
+	li	$v0, 10		#Encerra programa
+	syscall
 	
 carrega_vetor:#(int * _enderecoVetor) : int
 	lw	$t0, 0($sp)	#$t0 = _enderecoVetor (arg da funcao na pilha - pop)
