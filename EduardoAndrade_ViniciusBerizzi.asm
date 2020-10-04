@@ -92,15 +92,18 @@ cv_loop_fim:
 	sw	$t1, 0($sp)	#Escreve tamVet($t1) na pilha
 	jr	$ra
 	
-encontra_padrao: #(int *_vetDados, int _posDados, int *_vetPadrao, int _posPadrao, int _tamPadrao) : int
-	lw	$t0, 0($sp)
-	lw	$t1, 4($sp)
-	lw	$t2, 8($sp)
-	lw	$t3, 12($sp)
-	lw	$t4, 16($sp)
+encontra_padrao: #(int *_vetDados, int _posDados, int *_vetPadrao, int _posPadrao, int _) : int
+	lw	$t0, 0($sp)	#*_vetDados
+	lw	$t1, 4($sp)	# _posDados
+	lw	$t2, 8($sp)	#*_vetPadrao
+	lw	$t3, 12($sp)	# _posPadrao
+	lw	$t4, 16($sp)	# _tamPadrao
 	addiu	$sp, $sp, 20
 	
+	sll	$t5, $t1, 2	#$t5 = _posDados * 4
+	sll	
 	
+	bne	$
 	
 	.data
 str_tam_vet:	.asciiz "Informe o numero de dados a serem inseridos no vetor "
