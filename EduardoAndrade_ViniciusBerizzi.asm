@@ -100,10 +100,16 @@ encontra_padrao: #(int *_vetDados, int _posDados, int *_vetPadrao, int _posPadra
 	lw	$t4, 16($sp)	# _tamPadrao
 	addiu	$sp, $sp, 20
 	
-	sll	$t5, $t1, 2	#$t5 = _posDados * 4
-	sll	
+	sll	$t1, $t1, 2	#$t1 = _posDados($t1) * 4
+	sll	$t3, $t3, 2	#$t3 = _posPadrao($t3) * 4
+	addu	$t5, $t0, $t1	#$t5 = *_vetDados + deslocamento
+	addu	$t6, $t2, $t3	#$t6 = *_vetPadrao + deslocamento
+	lw	$t5, 0($t5)	#$t5 = conteudo do endereço $t5
+	lw	$t6, 0($t6)	#$t6 = conteudo do endereço $t6
 	
-	bne	$
+	bne	$t5, $t6
+	
+	
 	
 	.data
 str_tam_vet:	.asciiz "Informe o numero de dados a serem inseridos no vetor "
