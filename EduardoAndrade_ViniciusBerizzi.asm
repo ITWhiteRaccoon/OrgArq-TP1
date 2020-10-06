@@ -27,7 +27,7 @@ main:
 m_loop:
 	addu	$t0, $s5, $s3	#$t0 = posicaoDados + int_tam_padrao
 	bgt	$t0, $s1, main_end	#if ((posicaoDados + int_tam_padrao) > int_tam_dados) goto main_end
-	addiu	$sp, $sp, -20	#Abre 6 posicoes na pilha para os 5 parametros e o endereco de retorno que sera usado na recursao
+	addiu	$sp, $sp, -20	#Abre 5 posicoes na pilha para os 5 parametros
 	sw	$s0, 0($sp)	# *_vetDados
 	sw	$s5, 4($sp)	# _posDados
 	sw	$s2, 8($sp)	# *_vetPadrao
@@ -80,7 +80,7 @@ cv_loop:
 	
 	li	$v0, 5		#Le dado
 	syscall
-	move	$t0, $v0	#Insere dado na posicao do vetor
+	sw	$v0, 0($t3)	#Insere dado na posicao do vetor
 	
 	addiu	$t2, $t2, 1	#$t2 (posicao) = $t2 + 1
 	addiu	$t3, $t3, 4	#$t3 (endereco) = $t3 + 4 (vai para o endereco do prox elem)
@@ -120,7 +120,7 @@ encontra_padrao: #(int *_vetDados, int _posDados, int *_vetPadrao, int _posPadra
 	sw	$t0, 4($sp)	# *_vetDados
 	sw	$t1, 8($sp)	# _posDados
 	sw	$t2, 12($sp)	# *_vetPadrao
-	sw	$t3, 16($sp)	# 0
+	sw	$t3, 16($sp)	# _posPadrao
 	sw	$t4, 20($sp)	# _tamPadrao
 	jal	encontra_padrao
 	lw	$t0, 0($s0)	#Le resultado
@@ -141,12 +141,12 @@ ep_end:
 	jr	$ra
 	
 	.data
-str_tam_vet:	.asciiz "Informe o numero de dados a serem inseridos no vetor "
-str_dado_vet:	.asciiz "Informe um dado a ser inserido no vetor "
-str_qtd_padroes:.asciiz "Quantidade de padroes contabilizados: "
-str_dados:	.asciiz "dados: "
-str_padrao:	.asciiz	"padrao: "
 int_tam_dados:	.word	0
 int_tam_padrao:	.word	0
 vet_dados:	.space	200
 vet_padrao:	.space	20
+str_tam_vet:	.asciiz "Informe o numero de dados a serem inseridos no vetor: "
+str_dado_vet:	.asciiz "Informe um dado a ser inserido no vetor: "
+str_qtd_padroes:.asciiz "Quantidade de padroes contabilizados: "
+str_dados:	.asciiz "dados: "
+str_padrao:	.asciiz	"padrao: "
