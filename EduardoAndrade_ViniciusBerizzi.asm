@@ -27,7 +27,7 @@ main:
 m_loop:
 	addu	$t0, $s5, $s3	#$t0 = posicaoDados + int_tam_padrao
 	bgt	$t0, $s1, main_end	#if ((posicaoDados + int_tam_padrao) > int_tam_dados) goto main_end
-	addiu	$sp, $sp, -20	#Abre 5 posicoes na pilha para os 5 parametros
+	addiu	$sp, $sp, -20	#Abre 6 posicoes na pilha para os 5 parametros e o endereco de retorno que sera usado na recursao
 	sw	$s0, 0($sp)	# *_vetDados
 	sw	$s5, 4($sp)	# _posDados
 	sw	$s2, 8($sp)	# *_vetPadrao
@@ -98,18 +98,47 @@ encontra_padrao: #(int *_vetDados, int _posDados, int *_vetPadrao, int _posPadra
 	lw	$t2, 8($sp)	#*_vetPadrao
 	lw	$t3, 12($sp)	# _posPadrao
 	lw	$t4, 16($sp)	# _tamPadrao
-	addiu	$sp, $sp, 20
+	addiu	$sp, $sp, 20	#Consome os parametros
 	
-	sll	$t1, $t1, 2	#$t1 = _posDados($t1) * 4
+	sll	$t1, $t1, 2	#$t1 = _posDados($t1) * 4 (indice p/ bytes de deslocamento)
 	sll	$t3, $t3, 2	#$t3 = _posPadrao($t3) * 4
 	addu	$t5, $t0, $t1	#$t5 = *_vetDados + deslocamento
 	addu	$t6, $t2, $t3	#$t6 = *_vetPadrao + deslocamento
 	lw	$t5, 0($t5)	#$t5 = conteudo do endereço $t5
 	lw	$t6, 0($t6)	#$t6 = conteudo do endereço $t6
 	
-	bne	$t5, $t6
+	bne	$t5, $t6, ep_end_zero #if(_vetDados[_posDados] != _vetPadrao[_posPadrao]) return 0
+	srl	$t1, $t1, 2	#$t1 = _posDados / 4 (bytes de deslocamento p/ indice)
+	srl	$t3, $t3, 2	#$t3 = _posPadrao / 4 (bytes de deslocamento p/ indice)
+	addiu	$t7, $t4, -1	#$t7 = _tamPadrao - 1
 	
+	beq	$t3, $t7, ep_end_one #if(_posPadrao == _tamPadrao - 1) return 1
+	addiu	$t1, $t1, 1	#_posDados++
+	addiu	$t3, $t3, 1	#_posPadrao++
+	addiu	$sp, $sp, -24	#Guarda $ra e parametros, este sera consumido no inicio da funcao
+	sw	$ra, 0($sp)	#ultimo endereco de retorno
+	sw	$t0, 4($sp)	# *_vetDados
+	sw	$t1, 8($sp)	# _posDados
+	sw	$t2, 12($sp)	# *_vetPadrao
+	sw	$t3, 16($sp)	# 0
+	sw	$t4, 20($sp)	# _tamPadrao
+	jal	encontra_padrao
+	lw	$t0, 0($s0)	#Le resultado
+	lw	$ra, 4($sp)	#Le retorno guardado
+	addiu	$sp, $sp, 4	#Remove uma das posicoes da pilha
 	
+	j	ep_end
+	
+ep_end_zero:
+	li	$t0, 0		#Retorna 0
+	j	ep_end
+	
+ep_end_one:
+	li	$t0, 1		#Retorna 1
+	
+ep_end:
+	sw	$t0, 0($sp)	#Guarda resultado na pilha
+	jr	$ra
 	
 	.data
 str_tam_vet:	.asciiz "Informe o numero de dados a serem inseridos no vetor "
