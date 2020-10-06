@@ -116,17 +116,17 @@ encontra_padrao: #(int *_vetDados, int _posDados, int *_vetPadrao, int _posPadra
 	addiu	$t1, $t1, 1	#_posDados++
 	addiu	$t3, $t3, 1	#_posPadrao++
 	addiu	$sp, $sp, -24	#Guarda $ra e parametros, este sera consumido no inicio da funcao
-	sw	$ra, 0($sp)	#ultimo endereco de retorno
-	sw	$t0, 4($sp)	# *_vetDados
-	sw	$t1, 8($sp)	# _posDados
-	sw	$t2, 12($sp)	# *_vetPadrao
-	sw	$t3, 16($sp)	# _posPadrao
-	sw	$t4, 20($sp)	# _tamPadrao
+	sw	$t0, 0($sp)	# *_vetDados
+	sw	$t1, 4($sp)	# _posDados
+	sw	$t2, 8($sp)	# *_vetPadrao
+	sw	$t3, 12($sp)	# _posPadrao
+	sw	$t4, 16($sp)	# _tamPadrao
+	sw	$ra, 20($sp)	#ultimo endereco de retorno
 	jal	encontra_padrao
-	lw	$t0, 0($s0)	#Le resultado
-	lw	$ra, 4($sp)	#Le retorno guardado
-	addiu	$sp, $sp, 4	#Remove uma das posicoes da pilha
-	
+	lw	$t0, 0($sp)	#Le resultado
+	lw	$ra, 4($sp)	#Le endereco de retorno da pilha
+	addiu	$sp, $sp, 8	#Remove resultado da pilha
+
 	j	ep_end
 	
 ep_end_zero:
@@ -137,6 +137,7 @@ ep_end_one:
 	li	$t0, 1		#Retorna 1
 	
 ep_end:
+	addiu	$sp, $sp, -4
 	sw	$t0, 0($sp)	#Guarda resultado na pilha
 	jr	$ra
 	
