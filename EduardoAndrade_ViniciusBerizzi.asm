@@ -56,13 +56,9 @@ carrega_vetor: #(int * _enderecoVetor) : int
 	lw	$t0, 0($sp)	#$t0 = _enderecoVetor (arg da funcao na pilha - pop)
 	addiu	$sp, $sp, 4	#Ajusta pilha
 	
-	la	$a0, str_tam_vet	#Pede tam do vetor
+	la	$a0, str_tam_vet#Pede tam do vetor
 	li	$v0, 4
 	syscall
-	
-#	la	$a0, str_dados	#Estava usando para completar o pedido com 'vetor dados / vetor padrao'
-#	li	$v0, 4
-#	syscall
 	
 	li	$v0, 5		#Leitura do tam
 	syscall
@@ -149,5 +145,3 @@ vet_padrao:	.space	20
 str_tam_vet:	.asciiz "Informe o numero de dados a serem inseridos no vetor: "
 str_dado_vet:	.asciiz "Informe um dado a ser inserido no vetor: "
 str_qtd_padroes:.asciiz "Quantidade de padroes contabilizados: "
-str_dados:	.asciiz "dados: "
-str_padrao:	.asciiz	"padrao: "
