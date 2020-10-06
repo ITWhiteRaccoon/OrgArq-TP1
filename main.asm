@@ -64,7 +64,7 @@ carrega_vetor: #(int * _enderecoVetor) : int
 	syscall
 	move	$t1, $v0	#Move tam lido para $t1
 	
-	li	$t2, 0		#$t2 = posicao (necessario incrementar 1 a 1 para controlar se j· chegou ao tam do vetor
+	li	$t2, 0		#$t2 = posicao (necessario incrementar 1 a 1 para controlar se j√° chegou ao tam do vetor
 	addiu	$t3, $t0, 0	#$t3 = enderecoVetor (usado para percorrer vet, pode ser incrementado em 4)
 
 cv_loop:
@@ -84,7 +84,7 @@ cv_loop:
 	j cv_loop
 	
 cv_loop_fim:
-	addiu	$sp, $sp, -4	#Adiciona 1 espaÁo na pilha
+	addiu	$sp, $sp, -4	#Adiciona 1 espa√ßo na pilha
 	sw	$t1, 0($sp)	#Escreve tamVet($t1) na pilha
 	jr	$ra
 	
@@ -100,8 +100,8 @@ encontra_padrao: #(int *_vetDados, int _posDados, int *_vetPadrao, int _posPadra
 	sll	$t3, $t3, 2	#$t3 = _posPadrao($t3) * 4
 	addu	$t5, $t0, $t1	#$t5 = *_vetDados + deslocamento
 	addu	$t6, $t2, $t3	#$t6 = *_vetPadrao + deslocamento
-	lw	$t5, 0($t5)	#$t5 = conteudo do endereÁo $t5
-	lw	$t6, 0($t6)	#$t6 = conteudo do endereÁo $t6
+	lw	$t5, 0($t5)	#$t5 = conteudo do endere√ßo $t5
+	lw	$t6, 0($t6)	#$t6 = conteudo do endere√ßo $t6
 	
 	bne	$t5, $t6, ep_end_zero #if(_vetDados[_posDados] != _vetPadrao[_posPadrao]) return 0
 	srl	$t1, $t1, 2	#$t1 = _posDados / 4 (bytes de deslocamento p/ indice)
